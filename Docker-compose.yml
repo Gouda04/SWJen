@@ -1,0 +1,17 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: "12345678"  # Adjust as needed
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+      
+  api:
+    build: .
+    depends_on:
+      - sqlserver
+    environment:
+      ConnectionStrings__DefaultConnection: 'Server=localhost\SQLEXPRESS;Database=AdventureWorks2022;Integrated Security=True;TrustServerCertificate=True;'
+    ports:
+      - "8080:80"
